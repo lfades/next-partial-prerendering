@@ -3,6 +3,8 @@ import { Reviews } from '#/components/reviews';
 import { SingleProduct } from '#/components/single-product';
 import { Ping } from '#/components/ping';
 
+export const dynamic = 'force-static';
+
 export default function Page() {
   return (
     <div className="space-y-8 lg:space-y-14">
