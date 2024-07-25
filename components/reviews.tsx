@@ -1,25 +1,39 @@
+'use client';
+
 import type { Review } from '#/types/review';
 import { ProductReviewCard } from '#/components/product-review-card';
-import { headers } from 'next/headers';
 import { delayReviews, withDelay } from '#/lib/delay';
+import useSWR from 'swr';
 
-export async function Reviews() {
-  let reviews: Review[] = await withDelay(
+const fetcher = async (url: string) => {
+  let products: Review[] = await withDelay(
     fetch(
       // We intentionally delay the response to simulate a slow data
       // request that would benefit from streaming
-      `https://app-router-api.vercel.app/api/reviews`,
+      url,
       {
         // We intentionally disable Next.js Cache to better demo
         // streaming
         cache: 'no-store',
-      }
+      },
     ).then((res) => res.json()),
-    delayReviews
+    delayReviews,
+  );
+  return products;
+};
+
+export function Reviews() {
+  const { data, error, isLoading } = useSWR(
+    `https://app-router-api.vercel.app/api/reviews`,
+    fetcher,
   );
 
+  if (error || isLoading) return <ReviewsSkeleton />;
+
+  const reviews = data!;
+
   return (
-    <div className="space-y-6" data-headers={headers()}>
+    <div className="space-y-6">
       <div className="text-lg font-medium text-white">Customer Reviews</div>
       <div className="space-y-8">
         {reviews.map((review) => {

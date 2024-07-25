@@ -1,9 +1,5 @@
-import { Suspense } from 'react';
-import {
-  RecommendedProducts,
-  RecommendedProductsSkeleton,
-} from '#/components/recommended-products';
-import { Reviews, ReviewsSkeleton } from '#/components/reviews';
+import { RecommendedProducts } from '#/components/recommended-products';
+import { Reviews } from '#/components/reviews';
 import { SingleProduct } from '#/components/single-product';
 import { Ping } from '#/components/ping';
 
@@ -14,15 +10,11 @@ export default function Page() {
 
       <Ping />
 
-      <Suspense fallback={<RecommendedProductsSkeleton />}>
-        <RecommendedProducts />
-      </Suspense>
+      <RecommendedProducts />
 
       <Ping />
 
-      <Suspense fallback={<ReviewsSkeleton />}>
-        <Reviews />
-      </Suspense>
+      <Reviews />
     </div>
   );
 }

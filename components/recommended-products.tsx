@@ -1,26 +1,39 @@
+'use client';
+
 import { Product } from '#/types/product';
 import { ProductCard } from '#/components/product-card';
-import { headers } from 'next/headers';
 import { delayRecommendedProducts, withDelay } from '#/lib/delay';
+import useSWR from 'swr';
 
-export async function RecommendedProducts() {
-  headers();
+const fetcher = async (url: string) => {
   let products: Product[] = await withDelay(
     fetch(
       // We intentionally delay the response to simulate a slow data
       // request that would benefit from streaming
-      `https://app-router-api.vercel.app/api/products?filter=1`,
+      url,
       {
         // We intentionally disable Next.js Cache to better demo
         // streaming
         cache: 'no-store',
-      }
+      },
     ).then((res) => res.json()),
-    delayRecommendedProducts
+    delayRecommendedProducts,
+  );
+  return products;
+};
+
+export function RecommendedProducts() {
+  const { data, error, isLoading } = useSWR(
+    `https://app-router-api.vercel.app/api/products?filter=1`,
+    fetcher,
   );
 
+  if (error || isLoading) return <RecommendedProductsSkeleton />;
+
+  const products = data!;
+
   return (
-    <div className="space-y-6" data-headers={headers()}>
+    <div className="space-y-6">
       <div>
         <div className="text-lg font-medium text-white">
           Recommended Products for You

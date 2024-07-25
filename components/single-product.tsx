@@ -1,11 +1,12 @@
-import { Pricing } from "#/components/pricing";
-import type { Product } from "#/types/product";
-import { ProductRating } from "#/components/product-rating";
-import Image from "next/image";
+import { Pricing } from '#/components/pricing';
+import type { Product } from '#/types/product';
+import { ProductRating } from '#/components/product-rating';
+import Image from 'next/image';
 
 export async function SingleProduct() {
   const product: Product = await fetch(
-    `https://app-router-api.vercel.app/api/products?id=1`
+    `https://app-router-api.vercel.app/api/products?id=1`,
+    { cache: 'force-cache' },
   ).then((res) => res.json());
 
   return (
