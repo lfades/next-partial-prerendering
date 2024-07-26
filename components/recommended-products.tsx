@@ -1,3 +1,5 @@
+'use server';
+
 import { Product } from '#/types/product';
 import { ProductCard } from '#/components/product-card';
 import { headers } from 'next/headers';
@@ -14,9 +16,9 @@ export async function RecommendedProducts() {
         // We intentionally disable Next.js Cache to better demo
         // streaming
         cache: 'no-store',
-      }
+      },
     ).then((res) => res.json()),
-    delayRecommendedProducts
+    delayRecommendedProducts,
   );
 
   return (
@@ -55,7 +57,7 @@ function ProductSkeleton() {
   );
 }
 
-export function RecommendedProductsSkeleton() {
+export async function RecommendedProductsSkeleton() {
   return (
     <div className="space-y-6 pb-[5px]">
       <div className="space-y-2">

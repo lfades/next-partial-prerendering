@@ -1,4 +1,3 @@
-import { Suspense } from 'react';
 import {
   RecommendedProducts,
   RecommendedProductsSkeleton,
@@ -6,6 +5,9 @@ import {
 import { Reviews, ReviewsSkeleton } from '#/components/reviews';
 import { SingleProduct } from '#/components/single-product';
 import { Ping } from '#/components/ping';
+import { ServerDefer } from '#/components/server-defer';
+
+export const dynamic = 'force-static';
 
 export default function Page() {
   return (
@@ -14,15 +16,14 @@ export default function Page() {
 
       <Ping />
 
-      <Suspense fallback={<RecommendedProductsSkeleton />}>
-        <RecommendedProducts />
-      </Suspense>
+      <ServerDefer
+        fallback={<RecommendedProductsSkeleton />}
+        action={RecommendedProducts}
+      />
 
       <Ping />
 
-      <Suspense fallback={<ReviewsSkeleton />}>
-        <Reviews />
-      </Suspense>
+      <ServerDefer fallback={<ReviewsSkeleton />} action={Reviews} />
     </div>
   );
 }

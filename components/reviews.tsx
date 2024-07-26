@@ -1,3 +1,5 @@
+'use server';
+
 import type { Review } from '#/types/review';
 import { ProductReviewCard } from '#/components/product-review-card';
 import { headers } from 'next/headers';
@@ -13,9 +15,9 @@ export async function Reviews() {
         // We intentionally disable Next.js Cache to better demo
         // streaming
         cache: 'no-store',
-      }
+      },
     ).then((res) => res.json()),
-    delayReviews
+    delayReviews,
   );
 
   return (
@@ -43,7 +45,7 @@ function Skeleton() {
   );
 }
 
-export function ReviewsSkeleton() {
+export async function ReviewsSkeleton() {
   return (
     <div className="space-y-6">
       <div className={`h-7 w-2/5 rounded-lg bg-gray-900 ${shimmer}`} />
